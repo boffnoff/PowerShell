@@ -1,0 +1,67 @@
+Check language on remote PC
+
+Invoke-Command -ComputerName rhs-lv-0051 -Credential uk\rhsadmin10 -ScriptBlock {Get-Culture}
+
+
+check process usage on remote pc
+
+Invoke-Command -ComputerName rhs-lv-0051 -Credential uk\rhsadmin10 -ScriptBlock {Get-process pc-client}
+
+
+Set-ExecutionPolicy -ExecutionPolicy Undefined -Scope CurrentUser
+
+Check hard disks on remote pc:
+rundll32.exe user32.dll,LockWorkStation locks pc
+get-physicaldisk shows you media type (ssd/hdd) and if its healthy
+get-disk shows total size
+get-psdrive shows all drives (including remote ones) and mount points
+get-psdrive C shows  used GB and space remaining GB for C drive
+get-computerinfo -property "*processor*" shows CPU model, cores and sockets
+
+Get-WmiObject win32_physicalmemory lists all ram/memory specs
+get-WmiObject win32_baseboard shows motherboard model (and serial number if it was added to BIOS)
+
+
+Check delprof2 directory for files:
+
+$parameters = @{
+    ComputerName = 'rhs-lv-0051'
+    Credential = 'rhsadmin10'
+    ScriptBlock  = { Get-ChildItem $args[0] $args[1] }
+    ArgumentList = 'C:\IT\delprof2', '*.txt*'
+}
+
+Invoke-Command @parameters
+
+
+Check user downloads directory for files:
+
+$downloads = @{
+    ComputerName = 'rhs-lv-0051'
+    Credential = 'rhsadmin10'
+    ScriptBlock  = { Get-ChildItem $args[0] }
+    ArgumentList = 'C:\users\rhsstanr1\Downloads'
+}
+
+Invoke-Command @downloads
+
+
+
+$disk = Get-WmiObject Win32_LogicalDisk -ComputerName rhs-wv-0029 -Filter "DeviceID='C:'" |
+Select-Object Size,FreeSpace
+
+$disk.Size
+$disk.FreeSpace
+
+
+
+
+create a graphical powershell script with a window that is 650 x 730 pixels. create a credential login box at the top, and display the current user credentials beside it. Add a "logout" button to clear those credentials so someone else can sign in.
+Include a text input box below to enter computername. Then create 12 equally sized and spaced buttons (sort of like the windows 11 start menu) which send commands to a previously specified remote computer using invoke-command. Create the following commands:
+get-psdrive
+get-computerinfo -property "*processor*"
+Get-WmiObject win32_physicalmemory
+get-WmiObject win32_baseboard
+currently logged in user (if any)
+
+Show the output of the command within the window in the lower third
