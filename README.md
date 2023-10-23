@@ -107,6 +107,35 @@ Start-Process -wait -FilePath "C:\Program Files (x86)\Sanako\Study\Student\stude
 </details>
 
 
+<details>
+  <summary>Logoff users</summary><br>
+  
+quser
+logoff 1 (where 1 is the user ID) 
+You can get fancy and use PowerShell sessions
+Invoke-Command -Session $IT1 -ScriptBlock {logoff 1}
+</details>
+
+<details>
+  <summary>Access NAS / fileserver (PS Drive)</summary><br>
+  
+create new-psdrive
+new-PSDrive -Name "vapps1" -PSProvider "FileSystem" -Root "\\servername\share\folder\"
+</details>
+
+
+<details>
+  <summary>PowerShell Session (group PCs with credentials)</summary><br>
+  
+$regstatus = @{
+  ComputerName = 'computer01', 'computer02', 'computer03'
+  ConfigurationName = 'MySession.PowerShell'
+  ScriptBlock       = { get-service remoteregistry }
+}
+Invoke-Command @regstatus -credential domain\user | out-gridview
+</details>
+
+
 # macOS
 macOS scripts
 
