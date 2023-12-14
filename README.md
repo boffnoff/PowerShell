@@ -76,6 +76,19 @@ Copy-Item "Y:\test\folder\file.pdf" -Destination "C:\Users\USER\Desktop" -ToSess
 
 
 <details>
+  <summary>Set SCCM Business hours</summary><br>
+  
+Invoke-WmiMethod -Class CCM_ClientUXSettings -Namespace "root\ccm\clientsdk" -Name SetBusinessHours -ArgumentList 16,8,62
+</details>
+
+<details>
+  <summary>Enable auto install SCCM outside of hours</summary><br>
+  
+Invoke-WmiMethod -Namespace “Root\ccm\ClientSDK” -Class CCM_ClientUXSettings -Name SetAutoInstallRequiredSoftwaretoNonBusinessHours -ArgumentList @($TRUE)
+</details>
+
+
+<details>
   <summary>Fancy shutdown message</summary><br>
   
 shutdown /s  /c "Dr.EVIL has initiated a remote restart on your computer"
