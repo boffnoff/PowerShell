@@ -4,6 +4,25 @@ PowerShell deployment scripts
 
 
 <details>
+  <summary>Bitlocker Domain USB un-lock</summary><br>
+  
+- Setup Bitlocker to auto-unlock for specific domain group/user: (where X is USB drive)
+  
+Add-BitLockerKeyProtector -MountPoint "X:" ` -ADAccountOrGroup "uk\rhsadmin10" -ADAccountOrGroupProtector
+
+- Find out who is currently assigned to that USB:
+
+manage-bde -protectors -get "X:" -Type Identity
+
+</details>
+
+
+
+
+
+
+
+<details>
   <summary>SCCM Software Centre Updates</summary><br>
   
 - list update article and name
