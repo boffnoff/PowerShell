@@ -3,6 +3,126 @@ PowerShell deployment scripts
 
 
 
+
+
+
+
+<details>
+  <summary>Create shortcut with custom icon</summary><br>
+  
+  $WshShell = New-Object -comObject WScript.Shell ; $Shortcut = $WshShell.CreateShortcut("C:\\Users\\public\\Desktop\\test.url") ; $Shortcut.TargetPath = "https://test.ox.ac.uk/home"
+<br>
+$Shortcut.Save() ; Add-Content -Path "C:\\Users\\public\\Desktop\\test.url" -Value "IconFile=C:\Windows\System32\shell32.dll" ; Add-Content -Path "C:\\Users\\public\\Desktop\\test.url" -Value "IconIndex=43" ; $Shortcut.Save()
+
+</details>
+
+
+
+
+<details>
+  <summary>Upload files to Sharepoint</summary><br>
+  
+  net use r: https://gdsto365.sharepoint.com/sites/XXX/General%20Share/  user:uk\boffnoff 
+  <br>
+  copy "C:\Users\Boffnoff\Downloads\test.txt" r:\somefile.txt
+</details>
+
+
+<details>
+  <summary>Check running service on entire OU</summary><br>
+  
+  Get-ADComputer -Filter * -SearchBase "OU=RHS-IT1,OU=RHS-Senior,OU=RHS-Computers,OU=RHSB,OU=Schools,DC=uk,DC=gdst" | 
+    Select-Object -ExpandProperty Name | 
+    ForEach-Object {
+        $computerName = $_
+        Invoke-Command -ComputerName $computerName -ScriptBlock {
+           Get-Service -Name 'wuauserv' | Select-Object -Property PSComputerName, Status
+        }
+    } | sort-object PSComputerName
+</details>
+
+
+
+<details>
+  <summary>Get AD Description for specific PC</summary><br>
+
+Get-ADComputer -Identity "XX-XX-0005" -Properties * | select-object CN,Description  
+
+
+</details>
+
+
+
+
+<details>
+  <summary>List updates on selected PCs</summary><br>
+  
+  $results = invoke-command -computername rhs-wv-0030, rhs-wv-0005 -scriptblock {Get-WmiObject -Namespace "root\ccm\clientsdk" -Class CCM_SoftwareUpdate | Select-Object ArticleID, Name} -credential uk\rhsadmin10
+  <br>
+  $results | select-object PSComputerName, ArticleID, Name | sort-object PSComputerName
+</details>
+
+
+
+<details>
+  <summary>Sort all PCs in OU alphabetically</summary><br>
+
+  Get-ADComputer -Filter * -SearchBase "OU=RHS-IT1,OU=RHS-Senior,OU=RHS-Computers,OU=RHSB,OU=Schools,DC=uk,DC=gdst" | select-object Name | sort-object Name
+
+- Or use the following to filter by name within the OU
+
+  Get-ADComputer -Filter 'Name -like "*WT*" -SearchBase "etc..."
+
+</details>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <details>
   <summary>Bitlocker Domain USB un-lock</summary><br>
   
@@ -15,10 +135,6 @@ Add-BitLockerKeyProtector -MountPoint "X:" ` -ADAccountOrGroup "uk\rhsadmin10" -
 manage-bde -protectors -get "X:" -Type Identity
 
 </details>
-
-
-
-
 
 
 
