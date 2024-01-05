@@ -2,6 +2,14 @@
 PowerShell deployment scripts
 
 
+<details>
+  <summary>Check and start stopped service</summary><br>
+  
+  $status=(Get-Service Niagara).Status; 
+    <br>
+  if($status-eq 'Running'){}elseif($status-eq 'Stopped'){Write-Host "The service is stopped.";start-service Niagara;get-service Niagara|Select-object Status}else{Write-Host "The service is in an unexpected state: $status"}
+  
+</details>
 
 
 
