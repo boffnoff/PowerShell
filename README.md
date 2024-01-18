@@ -1,6 +1,10 @@
 # PowerShell
-PowerShell deployment scripts
+## Intune
 
+Uploaded a modified version of 'mark05E' debloater script to the Bloatware folder. Either edit and re-package the PowerShell file or deploy via Intune using the '.intunewim file'
+
+
+## PowerShell deployment scripts
 
 <details>
   <summary>Check and start stopped service</summary><br>
